@@ -1,0 +1,11 @@
+{
+  "name": "cordova-pushio-manager",
+  "version": "1.0.0",
+  "cordova": {
+    "id": "cordova-pushio-manager",
+    "platforms": [
+      "android"
+    ]
+  },
+  "description": "Plugin to integrate Oracle Push Cloud Service"
+}

@@ -1,0 +1,19 @@
+repositories {
+  jcenter()
+  flatDir {
+    dirs 'libs'
+  }
+}
+
+dependencies {
+  compile(name:'PushIOManager', ext:'aar')
+  compile 'com.google.android.gms:play-services-location:+'
+  compile 'com.google.android.gms:play-services-gcm:+'
+}
+
+android {
+  packagingOptions {
+    exclude 'META-INF/NOTICE'
+    exclude 'META-INF/LICENSE'
+  }
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-pushio-manager" version="1.0.0">
+  <name>Cordova PushIO Manager</name>
+  <description>Plugin to integrate Oracle Push Cloud Service</description>
+  <license></license>
+  <keywords></keywords>
+  <repo>https://bitbucket.org/AlfaCon/cordova-pushio-manager</repo>
+  <issue>https://bitbucket.org/AlfaCon/cordova-pushio-manager/issues</issue>
+
+  <!-- android -->
+  <platform name="android">
+    <js-module src="www/PushIOManagerPlugin.js" name="plugin">
+      <runs/>
+      <!-- This is the window variable name you want, like window.MyCordovaPlugin -->
+      <clobbers target="PushIOManager" />
+    </js-module>
+
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="PushIOManagerPlugin">
+        <param name="android-package" value="br.com.alfaconcursos.PushIOManagerPlugin" />
+        <param name="onload" value="true" />
+      </feature>
+    </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="/manifest">
+      <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
+      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+      <uses-permission android:name="android.permission.WAKE_LOCK" />
+      <uses-permission android:name="android.permission.INTERNET"/>
+      <permission android:name="${applicationId}.permission.PUSHIO_MESSAGE" android:protectionLevel="signature"/>
+      <uses-permission android:name="${applicationId}.permission.PUSHIO_MESSAGE"/>
+    </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+      <receiver android:name="com.pushio.manager.PushIOBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+        <intent-filter>
+          <action  android:name="com.google.android.c2dm.intent.RECEIVE" />
+          <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+          <category android:name="${applicationId}" />
+        </intent-filter>
+      </receiver>
+      <activity android:name="com.pushio.manager.PushIOActivityLauncher" android:exported="true" />
+      <service android:name="com.pushio.manager.PushIOGCMIntentService" />
+      <service android:name="com.pushio.manager.PushIOEngagementService" />
+      <service android:name="com.pushio.manager.PIOGCMRegistrationIntentService" android:exported="false"/>
+      <service android:name="com.pushio.manager.PIOInstanceIDListenerService" android:exported="false">
+        <intent-filter>
+          <action android:name="com.google.android.gms.iid.InstanceID" />
+        </intent-filter>
+      </service>
+    </config-file>
+
+    <source-file src="src/android/br/com/alfaconcursos/PushIOManagerPlugin.java" target-dir="src/br/com/alfaconcursos/" />
+    <framework src="build-extras.gradle" custom="true" type="gradleReference" />
+    <resource-file src="libs/PushIOManager.aar" target="libs/PushIOManager.aar" />
+    <hook type="before_build" src="hooks/before-build.js" />
+  </platform>
+</plugin>
